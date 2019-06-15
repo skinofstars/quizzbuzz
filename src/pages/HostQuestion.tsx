@@ -19,6 +19,11 @@ export const HostQuestion: React.FunctionComponent<
   return (
     <>
       <h1>Question</h1>
+
+      <button>Start</button>
+      <button>Accept</button>
+      <button>Reject</button>
+
       <Link to={`/host-round/${question.round}`}>Return to round</Link>
     </>
   );
