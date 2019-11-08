@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { RouteComponentProps, withRouter, Link } from "react-router-dom";
-import * as store from "../store";
+import * as store from "../datastore";
 
 interface IParams {
   id: string;

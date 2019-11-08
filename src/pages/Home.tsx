@@ -1,27 +1,47 @@
-import React from "react";
-import randomWords from "random-words";
-import uuidv1 from "uuid/v1";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import * as store from "../store";
+import React, { useContext } from 'react';
+import randomWords from 'random-words';
+import uuidv1 from 'uuid/v1';
+import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import * as store from '../datastore';
+import SocketContext from '../components/SocketContext/Context';
 
 export const Home: React.FunctionComponent<RouteComponentProps> = ({
   history
 }) => {
-  const handleClick = () => {
-    const newRoom = {
-      name: randomWords({ exactly: 2, join: "-" }),
+  const { joinRoom } = useContext(SocketContext);
+  const existingRoom = store.getItem()('room');
+
+  const handleHostClick = () => {
+    if (existingRoom) return;
+
+    const room = {
+      name: randomWords({ exactly: 2, join: '-' }),
       id: uuidv1()
     };
 
-    store.setItem()("room", newRoom);
+    store.setItem()('room', room);
 
-    history.push(`/host-room/${newRoom.id}`);
+    joinRoom({ roomName: room.name, roomId: room.id });
+
+    history.push(`/host-room/${room.id}`);
   };
+
+  if (existingRoom) {
+    joinRoom({
+      roomId: existingRoom.id,
+      roomName: existingRoom.name
+    });
+  }
 
   return (
     <>
       <h1>Home</h1>
-      <button onClick={handleClick}>Host</button>
+      {existingRoom ? (
+        <div>
+          <Link to={`/host-room/${existingRoom.id}`}>{existingRoom.name}</Link>
+        </div>
+      ) : null}
+      <button onClick={handleHostClick}>Host</button>
     </>
   );
 };

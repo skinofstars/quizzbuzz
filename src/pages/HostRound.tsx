@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import uuidv1 from "uuid/v1";
-import * as store from "../store";
+import * as store from "../datastore";
 
 interface IParams {
   id: string;
